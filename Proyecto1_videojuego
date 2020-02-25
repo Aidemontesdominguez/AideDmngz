@@ -1,0 +1,985 @@
+int Muerte = 0;
+int Salir = 0;
+int Turno = 0;
+float Personaje = 0;
+float Personaje1 = 0;
+float Personaje2 = 0;
+float RPersonaje=187, GPersonaje=222,BPersonaje=251;
+float RPersonajeD, GPersonajeD, BPersonajeD;
+float Vida=400;
+float Ganador;
+float especial = random(30, 50);
+
+
+
+//Clases Personajes --------------------------------------------------------------------------------------------------------------------------------------
+class Larry{
+float x, y;
+float tamano;
+float r,g,b,d;
+
+Larry(float tamano_, float x_, float y_){
+tamano = tamano_;
+x = x_;
+y = y_;
+}
+
+void display(){
+  ellipseMode(CORNER); 
+  fill(r,g,b);
+  ellipse(x, y, tamano,tamano);
+  rect(x+(tamano/4),((tamano*3)/8)+200,tamano/2,tamano/4);
+  rect(x+(tamano/4),y+((tamano*5)/8),tamano/8, tamano/2);
+  fill(255);
+  ellipse(x+(tamano*2)/3, y+tamano/4, tamano/4,tamano/2);
+  rect(x+(tamano/4),y+((tamano*10)/8),tamano/2,tamano/8);
+
+}
+
+}
+
+
+//clases Pantallas -------------------------------------------------------------------------------------------------------------------------------------
+class PantallaInicio{
+float tamano, x, y;
+float r, g, b;
+
+PantallaInicio(){
+tamano = 600;
+x = 0;
+y = 0;
+r = 1;
+g = 60;
+b = 120;
+}
+
+void display(){
+  fill(r,g,b);
+rect(x, y, tamano*2, tamano);
+}
+
+
+}
+
+
+class PantallaEleccion{
+float tamano;
+float x, y;
+float r, g, b;
+
+PantallaEleccion(){
+  tamano = 600;
+  x = 0;
+  y = 0;
+  r = 0;
+  g = 0; 
+  b = 0;
+}
+
+void display (){
+  fill(r, g, b);
+ rect(x, y, tamano*2, tamano);
+ 
+}  
+}
+
+
+class PantallaPelea{
+ float tamano;
+ float x, y;
+ float r, g, b;
+ 
+ 
+PantallaPelea(){
+tamano = 600;
+x = 0;
+y = 0;
+r = 255;
+g = 205;
+b = 210;
+}
+  
+void display(){
+fill( r, g, b);
+rect(x, y, tamano*2, tamano);
+}
+
+}
+
+
+
+class PantallaFinal{
+float tamano;
+float x, y;
+float r, g, b;
+
+PantallaFinal(){
+ tamano = 600;
+ x = 0;
+ y = 0;
+ r = 183;
+ g = 28;
+ b = 28;
+}
+
+void display(){
+ fill(r, g, b);
+ rect(x, y, tamano*2, tamano);
+}
+
+}
+
+
+
+//Objetos Pantalla Inicio-------------------------------------------------------
+class MenuEntrar{
+float tamano;
+float x,y;
+float r,g,b;
+String Start;
+float a;
+
+
+MenuEntrar(){
+ tamano = 70;
+ x = width/8;
+ y = (height*7)/16;
+ r = 197;
+ g = 202;
+ b = 233;
+ }
+ 
+ void display(){
+  fill(r , g, b);
+  rect(x, y, tamano*7, tamano, 20, 20, 20, 20);
+  fill(0);
+  textSize(40);
+  text("Inicio (Presiona SPACE)", x+(tamano/6),y+((tamano*3)/4));
+ }
+ 
+ void mover(){
+   if (key == ' '){
+   a = 1;
+     tamano = 75;   
+       }
+ if( a==1){
+       Muerte += 1; 
+     }
+}
+
+
+}
+
+
+class MenuSalir{
+float tamano;
+float x,y;
+float r,g,b;
+String Start;
+
+
+MenuSalir(){
+ tamano = 70;
+ x = width/8;
+ y = (height*12)/16;
+ r = 197;
+ g = 202;
+ b = 233;
+ }
+ 
+ void display(){
+  fill(r , g, b);
+  rect(x, y, tamano*5, tamano, 20, 20, 20, 20);
+  fill(0);
+  textSize(40);
+  text("Salir", x+(tamano/6),y+((tamano*3)/4));
+ }
+ 
+ void mover(){
+  if((mouseX>=x)&&(mouseX<=x+(tamano*5))&&(mouseY>=y)&&(mouseY<=y+(tamano)))
+  {
+  tamano = 75;   
+  }
+  else{
+  tamano = 70; 
+  } 
+ }
+ 
+void keyPressed(){
+ if((mouseX>=x)&&(mouseX<=x+(tamano*5))&&(mouseY>=y)&&(mouseY<=y+(tamano)))
+  {
+  if (mousePressed){
+   exit(); 
+    }
+   }
+  }
+  
+  
+}
+
+//clases Instrucciones----------------------------------------------------------------------------------------------------------------
+class Instrucciones{
+float tamano;
+float x,y;
+float r,g,b;
+
+Instrucciones(){
+tamano = 200;
+x = 0;
+y = height/4;
+r=255;
+g=241;
+b=118;  
+}
+ 
+  
+  void display(){
+    fill(r,g,b);
+   rect (x,y,tamano*6,tamano*2);
+   fill(0);
+   textSize(40);
+   text("    La modalidad del juego se basa en una partida por turnos",0,200);
+   text("              El Jugador 1 atacará con la tecla A",0,270);
+   text("              El jugador 2 atacará con la tecla B",0,320);
+   text("    La cantidad de daño de los ataques es totalmente aleatoria",0,390);
+   
+   textSize(20);
+   text(" No recomendado para público en general                                                         Presiona X para continuar",0,500);
+    
+    
+  }
+  
+  
+ void mover(){
+   if (key == 'x'){
+    Muerte+=1; 
+   }
+ }
+  
+  
+  
+  
+  
+  
+}
+
+
+
+//Clases Objetos Pantalla de selección------------------------------------------------------------------------------------------------------
+class SeleccionPersonaje{
+  float r1,r2, r3, r4, r5, g1,g2,g3,g4,g5, b1,b2,b3,b4,b5;
+  float a,b,c,d,e,f,g,h,i,j;
+  
+  SeleccionPersonaje(){
+   r1 = 0;
+   g1 = 150;
+   b1 = 136;
+   r2 = 179;
+   g2 = 136;
+   b2 = 255;
+   r3 = 248;
+   g3 = 187;
+   b3= 208;
+   r4 = 139;
+   g4 = 195;
+   b4 = 74;
+   r5 = 253;
+   g5 = 216;
+   b5 = 53;
+  }
+  
+  
+Larry uno;
+Larry dos;
+Larry tres;
+Larry cuatro;
+Larry cinco;
+void display(){
+  fill(r1, g1, b1);
+  rect(width/16, (height*3)/16,(width*2)/8, (height*5)/16, 20,20,20,20);
+  fill(r2, g2, b2);
+  rect((width*3)/8, (height*3)/16,(width*2)/8, (height*5)/16, 20,20,20,20);
+  fill(r3,g3, b3);
+  rect((width*11)/16,(height*3)/16,(width*2)/8, (height*5)/16, 20,20,20,20);
+  fill(r4, g4, b4);
+  rect(width/8, (height*9)/16,(width*2)/8, (height*5)/16, 20,20,20,20);
+  fill(r5, g5, b5);
+  rect((width*5)/8,(height*9)/16,(width*2)/8, (height*5)/16, 20,20,20,20);
+  fill(255);
+  textSize(18);
+  text("                                                                                 El personaje del jugador 1",0,350);
+  text("                                                                                 se seleccionara con los números",0,370);
+  text("                                                                                 El personaje del jugador 2",0,390);
+  text("                                                                                 se seleccionara con las letras",0,410);
+    text("                                                                                 Presiona ENTER para continuar",0,550);
+  
+ uno = new Larry(100, width/8, ((height*3)/16));
+ dos = new Larry(100, (width*4)/8, ((height*3)/16));
+ tres = new Larry(100, ((width*13)/16), ((height*3)/16));
+ cuatro = new Larry(100,((width*1.5)/8), ((height*10)/16));
+ cinco = new Larry(100, ((width*6)/8), ((height*10)/16));
+ uno.display();
+ dos.display();
+ tres.display();
+ cuatro.display();
+ cinco.display();
+ fill(0,120,136);
+ ellipse(width/16, ((height*3)/16), 80,80);
+ fill(0);
+ textSize(30);
+ text("1|q",width/16+8, ((height*3)/16)+50);
+ fill(139,136,255);
+ ellipse((width*3)/8, ((height*3)/16), 80,80);
+ fill(0);
+ textSize(30);
+ text("2|w",(width*3)/8 +8, ((height*3)/16)+50);
+  fill(208,187,208);
+ ellipse((width*11)/16, ((height*3)/16), 80,80);
+ fill(0);
+ textSize(30);
+ text("3|e",((width*11)/16)+8, ((height*3)/16)+50);
+  fill(139,195,24);
+ ellipse((width/8), ((height*9)/16), 80,80);
+ fill(0);
+ textSize(30);
+ text("4|r",(width/8)+8, ((height*9)/16)+50);
+  fill(253,216,53);
+ ellipse((width*5)/8,(height*9)/16, 80,80);
+ fill(0);
+ textSize(30);
+ text("5|t",(width*5)/8+8, ((height*9)/16)+50);
+}
+
+void keyPressed(){
+  if(keyPressed){
+  if(key == '1'){
+    fill(r1, g1, b1);
+    rect(width/16, (height*3)/16,(width*2)/8, (height*5)/16);
+    RPersonaje = r1;
+    BPersonaje = b1;
+    GPersonaje = g1;
+    g1-= 10;
+    Personaje1 = 1;
+    }
+    
+    
+    if(key == 'q'){
+    RPersonajeD = r1;
+    BPersonajeD = b1;
+    GPersonajeD = g1;
+    g1-= 10;
+    Personaje2 = 1;
+    }
+    
+    
+  if(key == '2'){
+  fill(179, 136, 255);
+  rect((width*3)/8, (height*3)/16,(width*2)/8, (height*5)/16);
+    RPersonaje = r2;
+    BPersonaje = b2;
+    GPersonaje = g2;
+    g2-= 10;
+    Personaje1 = 2;
+    }
+    
+    if(key == 'w'){
+    RPersonajeD = r2;
+    BPersonajeD = b2;
+    GPersonajeD = g2;
+    g2-= 10;
+    Personaje2 = 2;
+    }
+
+if(key == '3'){
+  fill(248, 187, 208);
+  rect((width*11)/16,(height*3)/16,(width*2)/8, (height*5)/16);
+    RPersonaje = r3;
+    BPersonaje = b3;
+    GPersonaje = g3;
+    g3-= 10;
+    Personaje1 = 3;
+}
+    
+    if(key == 'e'){
+    RPersonajeD = r3;
+    BPersonajeD = b3;
+    GPersonajeD = g3;
+    g3-= 10;
+    Personaje2 = 3;
+    }
+    
+    
+if(key == '4'){
+fill(139, 195, 74);
+  rect(width/8, (height*9)/16,(width*2)/8, (height*5)/16);
+    RPersonaje = r4;
+    BPersonaje = b4;
+    GPersonaje = g4;
+    g4-= 10;
+    Personaje1 = 4;
+}
+    
+    if(key == 'r'){
+    RPersonajeD = r4;
+    BPersonajeD = b4;
+    GPersonajeD = g4;
+    g4-= 10;
+    Personaje2 = 4;
+    }
+    
+if(key == '5'){
+fill(253, 216, 53);
+  rect((width*5)/8,(height*9)/16,(width*2)/8, (height*5)/16);
+    RPersonaje = r5;
+    BPersonaje = b5;
+    GPersonaje = g5;
+    g5-= 10;
+    Personaje1 = 5;
+}
+    
+    if(key == 't'){
+    RPersonajeD = r5;
+    BPersonajeD = b5;
+    GPersonajeD = g5;
+    g5-= 10;
+    Personaje2 = 5;
+    } 
+      //if (((key == 'q')||(key == 'w')||(key == 'e')||(key == 'r')||(key == 't'))&&((key == '1')||(key == '2')||(key == '3')||(key == '4')||(key == '5'))){
+        if (key == ENTER){
+        Muerte += 1;
+}
+  println(Personaje);
+}
+}
+}
+
+
+
+
+//Clases Objetos Pantalla de pelea----------------------------------------------------------------------------------------
+class BarraDeVida{
+  float tamano,tamanodos;
+  float x, y;
+  float r, g, b;
+  boolean Dano;
+  
+ 
+  BarraDeVida (){
+  tamano = width/3;
+  x = width/16;
+  y = 20;
+  r = 237;
+  g = 231;
+  b = 246;
+  }
+  
+  void display(){ 
+    fill(r, g, b);
+  rect(x, y, tamano, tamano/8);
+  fill(255, 143, 0);
+  rect(x, y, Vida, tamano/8);
+  }
+ 
+ void keyPressed(){
+   if(Turno==1){
+ if(key == 'l'){
+   Vida -= random(10,50);
+  }
+   if(Vida<=0){
+     Muerte = 4;
+     Ganador = Personaje2;
+   }
+   }
+ }  
+}
+
+
+class BarraDeVidaDos{
+ float tamano;
+ float x, y;
+ float r,g,b;
+ float Vida;
+ 
+ BarraDeVidaDos(){
+  tamano = width/3;
+  x = (width/2)+150;
+  y = 20; 
+  r = 237;
+  g = 231;
+  b = 246;
+  Vida = 1;
+  }
+  
+  void display(){ 
+   fill(255, 143, 0);
+  rect(x, y, tamano, tamano/8);
+    fill(r, g, b);
+  rect(x, y, Vida, tamano/8);
+
+  }
+  
+  
+ void keyPressed(){
+   if(Turno==0){
+  if(key == 'a'){
+    Vida += random(10,50);
+   if(Vida>=400){
+     Muerte = 4;
+     Ganador = Personaje1;
+   }
+ }
+ }
+ }
+ 
+}
+ 
+ 
+class LogoVS{
+  float tamano;
+  float x, y;
+  
+ LogoVS(){
+  tamano = 200;
+  x = (width/2)-(tamano/2);
+  y = 5; 
+ }
+ 
+ void display(){
+   fill(183, 28, 28);
+   ellipseMode(CORNER);
+   ellipse(x,y,tamano, tamano);   
+ } 
+}
+
+class TurnoJugador{
+ float tamano;
+ float x, y;
+ float r,g,b;
+ float t;
+ float dano;
+ 
+ TurnoJugador(float x_,float y_, float t_){
+   x = x_;
+   y = y_;
+   tamano = width/2;
+   r = 0;
+   g = 0;
+   t = t_;
+   b = 0;
+   dano = 10;
+ }
+ 
+ 
+ void display(){
+ fill(r,g,b);
+ rect(x, y, tamano, height);  
+ if(Turno==t){
+   r = 198;
+   g = 40;
+   b = 40;
+ }
+ else{
+   r = 255;
+   g = 138;
+   b = 128; 
+ }
+ }
+ 
+ void turnos(){
+   
+  if (Turno==0){
+  if (key=='a'){
+    Turno=1;
+  }
+    }
+
+  if (Turno==1){
+    if(key=='l'){
+      Turno=0;
+  }
+   
+  println(Turno);  
+  
+ }
+
+}
+}
+
+class AtaqueNormal{
+  float tamano;
+  float x;
+  float y;
+  float dx;
+  float tamanop;
+  float disx;
+  float x2, y2;
+  AtaqueNormal(){
+   tamano = 50;
+     x = width/20;
+     y = height/7;
+    dx = 4;
+    tamanop = 70;
+    disx = (width)/8;
+    x2 = width;
+    y2 = (height*9)/8;
+  }
+  
+  void display(){
+       if(Turno==0){
+fill(RPersonaje,GPersonaje,BPersonaje);
+   pushMatrix();
+   translate(x,y);
+   rect(disx,(height/2)-(tamanop/2),tamanop*2,tamanop);
+   rect(disx+(tamanop*2),(height/2)-((tamanop*3)/2),tamanop*2.5,tamanop*3,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2)+((tamanop*3)/4),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2)+(((tamanop*3)/4)*2),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2)+(((tamanop*3)/4)*3),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+20,(height/2)-((tamanop*3)/2),tamanop+(tamanop/2),tamanop,0,0,0,20);
+   rect(disx+(tamanop*2)+20+tamanop,(height/2)-((tamanop*3)/2),tamanop,tamanop+(tamanop/2),0,0,20,20);
+   popMatrix();
+   }
+   else{
+fill(RPersonajeD,GPersonajeD,BPersonaje);
+   pushMatrix();
+   translate(x2,y2);
+   rotate(PI);
+   rect(disx,(height/2)-(tamanop/2),tamanop*2,tamanop);
+   rect(disx+(tamanop*2),(height/2)-((tamanop*3)/2),tamanop*2.5,tamanop*3,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2)+((tamanop*3)/4),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2)+(((tamanop*3)/4)*2),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+((tamanop*2.5)/2),(height/2)-((tamanop*3)/2)+(((tamanop*3)/4)*3),tamanop+(tamanop/2),(tamanop*3)/4,20);
+   rect(disx+(tamanop*2)+20,(height/2)-((tamanop*3)/2),tamanop+(tamanop/2),tamanop,0,0,0,20);
+   rect(disx+(tamanop*2)+20+tamanop,(height/2)-((tamanop*3)/2),tamanop,tamanop+(tamanop/2),0,0,20,20);
+   popMatrix();
+   }
+  }
+  
+
+  void mover (){
+      if (Turno==0)
+      {
+        if(key == 'a'){
+       for(int i=0; i>=10; i++){
+       x += dx;
+       }
+        }
+      }
+     if(Turno==1)
+     {
+          if(key == 'l'){
+       for(int i=0; i>=10; i++){
+       x2 -= dx;
+       }
+     
+        } 
+      }
+    }
+  
+  
+}
+
+
+
+
+//Clases Final -----------------------------------------------------------
+
+class Ganador{
+float tama;
+float x, y;
+float r,g,b;
+float dx;
+
+Ganador(){
+ tama = 400;
+ x = width/2;
+ y = height/2;
+ r =205;
+ g =164;
+ b =52;
+}
+ Larry uno;
+Larry dos;
+Larry tres;
+Larry cuatro;
+Larry cinco;
+void display(){ 
+ uno = new Larry(300, (width*5)/8, height/8);
+ dos = new Larry(300, (width*5)/8, height/8);
+ tres = new Larry(300, (width*5)/8, height/8);
+ cuatro = new Larry(300,(width*5)/8, height/8);
+ cinco = new Larry(300, (width*5)/8, height/8);
+  fill(r,g,b);
+  ellipseMode(CORNER);
+ ellipse(-300,-100,tama*2, tama*2); 
+ textSize(70);
+ text("Eres el Ganador",(width*2)/4,550);
+ if(Ganador == 1){
+   textSize(50);
+  text("Larry",(width*2)/4,height/6); 
+   uno.display();
+ }
+  if(Ganador == 2){
+   textSize(50);
+  text("Tom",(width*2)/4,height/6); 
+   dos.display();
+ }
+ if(Ganador == 3){
+   textSize(50);
+  text("Lizy",(width*2)/4,height/6); 
+   tres.display();
+ }
+  if(Ganador == 4){
+   textSize(50);
+  text("Eva",(width*2)/4,height/6); 
+   cuatro.display();
+ }
+  if(Ganador == 5){
+   textSize(50);
+  text("Jack",(width*2)/4,height/6); 
+   cinco.display();
+ }
+}
+}
+
+// Clases Titulos---------------------------------------------------------------------------------------------------------------------------
+class Titulo{
+float tamano;
+float x, y;
+float r, g, b;
+float dx;
+
+Titulo(){
+ tamano = (200);
+ x = width/2-tamano;
+ y = height/16;
+ r = 243;
+ g = 229;
+ b = 245;
+ dx = 5;
+}
+
+void display (){
+noStroke();
+fill(r, g, b);
+rect(300, y, tamano*3, 150,50,50,50,50);
+fill(0);
+textSize(100);
+text("SKPUNCH",350,150);
+}
+}
+
+
+
+class TituloChu{
+float tamano;
+float x, y;
+float r, g, b;
+float dx;
+TituloChu(){
+ tamano = (300);
+ x = width/2-tamano;
+ y = 10;
+ r = 243;
+ g = 229;
+ b = 245;
+ dx = 5;
+}
+
+void display (){
+noStroke();
+fill(253, 216, 53);
+rect(x, y, tamano*2, height/8,20,20,20,20);
+fill(255);
+textSize(50);
+text("Escoge a tu personaje", tamano+50,56);
+}
+}
+
+class TituloNombre{
+ float tamano;
+ float x, y;
+ float r, g,b;
+ String tex;
+ 
+ TituloNombre(String tex_, float x_, float y_, float r_, float g_, float b_){
+ tamano = (width*2)/8;
+ tex = tex_;
+ x = x_;
+ y = y_;
+ r = r_;
+ g = g_;
+ b = b_;
+ }
+ 
+ void display(){
+ fill(r, g, b);
+ rect(x, y, tamano,30);
+ fill(0);
+ textSize(50);
+ text(tex,x+80, y+30, tamano);
+ }
+  
+}
+   
+
+
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+//inicio...........................................................
+Larry uno;
+Larry dos;
+Larry tres;
+PantallaInicio inicio;
+Titulo tituloInicio;
+MenuEntrar Iniciar;
+MenuSalir salir;
+Instrucciones menu;
+
+//eleccion............................................................
+PantallaEleccion eleccion;
+SeleccionPersonaje Chu;
+TituloChu Elige;
+TituloNombre larry;
+TituloNombre Tom;
+TituloNombre Lizy;
+TituloNombre Eva;
+TituloNombre Jack;
+
+
+//pelea ....................................................
+PantallaPelea pelea;
+BarraDeVida Barrauno;
+BarraDeVidaDos Barrados;
+LogoVS logo;
+TurnoJugador Turno1;
+TurnoJugador Turno2;
+Larry Jugador1;
+Larry Jugador2;
+AtaqueNormal Ataque;
+
+
+
+
+
+//final................................................
+PantallaFinal F;
+Ganador tu;
+
+
+
+
+
+void setup(){
+  size(1200,600);
+  
+  //pantalla inicio----------------------
+  inicio = new PantallaInicio();
+  uno = new Larry(300, -50, 0);
+  dos = new Larry(300, 450, 0);
+  tres = new Larry(300,950, 0);
+  tituloInicio = new Titulo();
+  Iniciar = new MenuEntrar();
+  salir = new MenuSalir();
+  menu = new Instrucciones();
+  
+  //pantalla eleccion-----------------------
+  eleccion = new PantallaEleccion();
+  Chu = new SeleccionPersonaje();
+  Elige = new TituloChu();
+  larry = new TituloNombre("Larry",width/16,height/2, 0, 150, 136);
+  Tom = new TituloNombre("Tom",(width*3)/8, height/2, 179, 136, 255);
+  Lizy = new TituloNombre("Lizy",(width*11)/16, height/2, 248, 187, 208);
+  Eva = new TituloNombre("Eva", width/8, (height*7)/8,139, 195, 74);
+  Jack = new TituloNombre("Jack", (width*5)/8, (height*7)/8,253, 216, 53);
+  
+  
+  //Pantalla pelea--------------
+  pelea = new PantallaPelea();
+  Barrauno = new BarraDeVida();
+  Barrados = new BarraDeVidaDos();
+  logo = new LogoVS();
+  Turno1 = new TurnoJugador(0,0,0);
+  Turno2 = new TurnoJugador(width/2,0,1);
+  Jugador1 = new Larry(300,width/10,height/4);
+  Jugador2 = new Larry(300,(width*6)/10,height/4);
+  Barrauno= new BarraDeVida ();
+  Barrados = new BarraDeVidaDos();
+  Ataque = new AtaqueNormal ();
+  //Pantalla Final------------
+  F = new PantallaFinal();
+  tu = new Ganador();
+  
+
+
+}
+
+
+void draw (){
+  
+  switch(Muerte){
+  case (0):
+  {
+    //Inicio
+  inicio.display();
+  uno.display();
+  dos.display();
+  tres.display();
+  tituloInicio.display();
+  Iniciar.display();
+  Iniciar.mover();
+  salir.display();
+  salir.mover();
+  salir.keyPressed();
+  
+  }
+  break;
+  case(1):
+  inicio.display();
+  menu.display ();
+  menu.mover();
+    break;
+  case(2):
+  {
+  //seleccion personaje
+  eleccion.display();
+  Elige.display();
+  Chu.keyPressed();
+  Chu.display();
+  larry.display();
+  Tom.display();
+  Lizy.display();
+  Eva.display();
+  Jack.display();
+  }
+  break;
+  case(3):
+  {
+  //Modo Pelea
+  pelea.display();
+  Turno1.display();
+  Turno2.display();
+  logo.display();
+ Jugador1.display();
+  Jugador2.display();
+  Ataque.display();
+  Ataque.mover();
+  Barrauno.display();
+  Barrauno.keyPressed();
+  Barrados.display();
+  Barrados.keyPressed();
+  Turno1.turnos();
+  } 
+  break;
+  
+  
+  case(4):
+  {
+  F.display();
+  tu.display();
+  }
+break;
+  }
+}
